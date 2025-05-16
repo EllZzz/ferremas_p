@@ -28,6 +28,8 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  
+
 
   useEffect(() => {
     // Obtener productos
