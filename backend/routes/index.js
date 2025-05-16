@@ -1,15 +1,21 @@
+import express from "express";
+
+import userRoutes from "./user.routes.js";
+import productRoutes from "./product.routes.js";
 import reviewRoutes from "./review.routes.js";
 import userRoutes from "./user.routes.js";
-import productRoutes from "./product.routes.js";  // Importa la ruta de productos
+import productRoutes from "./product.routes.js";
 import categoryRoutes from "./category.routes.js"; 
-import authRoutes from './auth.routes.js';
+import stripeRoutes from './stripe.routes.js';
+import authRoutes from "./auth.routes.js";
 
-const routes = [
-  { path: "/api/reviews", router: reviewRoutes },
-  { path: "/api/users", router: userRoutes },
-  { path: "/api/products", router: productRoutes },  
-   { path: "/api/categories", router: categoryRoutes },// Agrega esta línea
-    { path: '/api/auth', router: authRoutes },
-];
+const router = express.Router();
 
-export default routes;
+router.use("/users", userRoutes); 
+router.use("/reviews", reviewRoutes);
+router.use("/products", productRoutes);
+router.use("/categories", categoryRoutes);
+router.use('/stripe', stripeRoutes);
+router.use("/auth", authRoutes);
+
+export default router;
