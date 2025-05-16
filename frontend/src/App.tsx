@@ -21,6 +21,33 @@ interface Category {
   Category_name: string;
 }
 
+// Lista de imágenes genéricas de herramientas desde Unsplash
+const toolImages = [
+  "/images/tools/taladro_bosch.jpg.jpg",
+  "/images/tools/destornillador.jpg",
+  "/images/tools/cierra.jpg",    
+  "/images/tools/martillo.jpg",
+  "/images/tools/taladro2.jpg",
+  "/images/tools/taladro3.jpg",
+  "/images/tools/herramienta1.jpg",
+  "/images/tools/herramienta2jpg",
+  "/images/tools/herramienta3.jpg",
+  "/images/tools/herramienta4.jpg",
+  "/images/tools/herramienta5.jpg",
+  "/images/tools/herramienta6.jpg",
+  "/images/tools/herramienta7.jpg",
+  "/images/tools/herramienta8.jpg",
+  "/images/tools/herramienta9.jpg",
+  "/images/tools/herramienta10.jpg",
+  "/images/tools/herramienta11.jpg",
+  "/images/tools/herramienta12.jpg",
+  "/images/tools/herramienta13.jpg",
+  "/images/tools/herramienta14.jpg",
+  "/images/tools/herramienta15.jpg",
+  "/images/tools/herramienta16.jpg",
+  "/images/tools/herramienta17.jpg",
+];
+
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -28,34 +55,27 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
-
 
   useEffect(() => {
-    // Obtener productos
     fetch('http://localhost:5000/api/products')
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(error => console.error("Error al obtener productos:", error));
     
-    // Obtener categorías
     fetch('http://localhost:5000/api/categories')
       .then(res => res.json())
       .then(data => setCategories(data))
       .catch(error => console.error("Error al obtener categorías:", error));
   }, []);
 
-  // Filtrar productos por categoría seleccionada
   const filteredProducts = selectedCategory
     ? products.filter(product => product.fk_category === selectedCategory)
     : products;
 
   const addToCart = (product: Product) => {
-    // Verificar stock antes de agregar al carrito
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.idProduct === product.idProduct);
       if (existingItem) {
-        // Verificar si hay suficiente stock para incrementar
         if (existingItem.quantity < product.stock) {
           return prevCart.map(item =>
             item.idProduct === product.idProduct
@@ -63,9 +83,8 @@ export default function App() {
               : item
           );
         }
-        return prevCart; // No hacer cambios si no hay stock suficiente
+        return prevCart;
       } else {
-        // Solo agregar si hay stock
         if (product.stock > 0) {
           return [...prevCart, { ...product, quantity: 1 }];
         }
@@ -80,12 +99,9 @@ export default function App() {
 
   const updateQuantity = (idProduct: number, quantity: number) => {
     if (quantity < 1) {
-      // Si la cantidad es menor a 1, eliminar del carrito
       removeFromCart(idProduct);
       return;
     }
-    
-    // Verificar el stock disponible antes de actualizar
     const product = products.find(p => p.idProduct === idProduct);
     if (product && quantity <= product.stock) {
       setCart(prevCart =>
@@ -96,7 +112,6 @@ export default function App() {
     }
   };
 
-  // Calcular el total del carrito
   const totalPrice = cart.reduce((acc, item) => acc + item.product_unitprice * item.quantity, 0);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -112,7 +127,6 @@ export default function App() {
       <div className="min-h-screen w-screen relative">
         <Navbar />
 
-        {/* Botón flotante carrito */}
         <button
           onClick={() => setIsCartOpen(!isCartOpen)}
           className="fixed top-4 right-4 z-50 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 flex items-center space-x-2"
@@ -124,7 +138,6 @@ export default function App() {
           {totalItems > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">{totalItems}</span>}
         </button>
 
-        {/* Sidebar del carrito */}
         <div
           className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 z-40
             ${isCartOpen ? "translate-x-0" : "translate-x-full"}
@@ -154,14 +167,12 @@ export default function App() {
                       <button
                         onClick={() => updateQuantity(item.idProduct, item.quantity - 1)}
                         className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                        aria-label={`Disminuir cantidad de ${item.product_name}`}
                       >-</button>
                       <span>{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.idProduct, item.quantity + 1)}
                         className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
                         disabled={item.quantity >= item.stock}
-                        aria-label={`Aumentar cantidad de ${item.product_name}`}
                       >+</button>
                     </div>
                   </div>
@@ -170,7 +181,6 @@ export default function App() {
                     <button
                       onClick={() => removeFromCart(item.idProduct)}
                       className="text-red-600 hover:text-red-800 mt-2 text-sm"
-                      aria-label={`Eliminar ${item.product_name} del carrito`}
                     >
                       Eliminar
                     </button>
@@ -208,35 +218,25 @@ export default function App() {
           </div>
         </section>
 
-        {/* Filtro de categorías */}
         <section className="bg-white py-6">
           <div className="max-w-7xl mx-auto px-4">
             <h3 className="text-xl font-bold text-blue-800 mb-4">Categorías</h3>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-2 rounded ${
-                  selectedCategory === null
-                    ? "bg-blue-800 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
+                className={`px-4 py-2 rounded ${selectedCategory === null ? "bg-blue-800 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
               >
                 Todas
               </button>
-{categories.map((cat) => (
-  <button
-    key={cat.idCategory}
-    onClick={() => setSelectedCategory(cat.idCategory)}
-    className={`px-4 py-2 rounded ${
-      selectedCategory === cat.idCategory
-        ? "bg-blue-800 text-white"
-        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-    }`}
-  >
-    {cat.Category_name}
-  </button>
-))}
-
+              {categories.map((cat) => (
+                <button
+                  key={cat.idCategory}
+                  onClick={() => setSelectedCategory(cat.idCategory)}
+                  className={`px-4 py-2 rounded ${selectedCategory === cat.idCategory ? "bg-blue-800 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                >
+                  {cat.Category_name}
+                </button>
+              ))}
             </div>
           </div>
         </section>
@@ -247,9 +247,9 @@ export default function App() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {filteredProducts.map(product => (
                 <div key={product.idProduct} className="border p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col">
-                 <img
-  src={`/images/${product.product_img}`}
-  alt={product.product_name}
+                  <img
+  src={toolImages[product.idProduct % toolImages.length]}
+  alt="Herramienta"
   className="w-full h-48 object-cover mb-4 rounded-lg"
 />
 
