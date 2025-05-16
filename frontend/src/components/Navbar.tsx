@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 export default function Navbar() {
     return (
         <>
@@ -23,11 +24,11 @@ export default function Navbar() {
                 <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
                     <h1 className="text-2xl font-bold">FERRE<span className="text-yellow-400">+</span>MAS</h1>
                     <nav className="space-x-4 hidden md:block">
-                        <a href="#" className="hover:text-yellow-400">Inicio</a>
+                        <Link to="/" className="hover:text-yellow-400">Inicio</Link>
                         <a href="#" className="hover:text-yellow-400">Productos</a>
                         <a href="#" className="hover:text-yellow-400">Ofertas</a>
                         <a href="#" className="hover:text-yellow-400">Servicios</a>
-                        <a href="#" className="hover:text-yellow-400">Contacto</a>
+                        <Link to="/contact" className="hover:text-yellow-400">Contacto</Link>
                     </nav>
                     <div className="space-x-4">
                         <button><i className="fas fa-search"></i></button>
