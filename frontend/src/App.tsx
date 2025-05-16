@@ -9,23 +9,44 @@ interface Product {
   stock: number;
   product_unitprice: number;
   product_img: string;
+  fk_category: number;
 }
 
 interface CartItem extends Product {
   quantity: number;
 }
 
+interface Category {
+  idCategory: number;
+  Category_name: string;
+}
+
+
 export default function App() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
+    // Obtener productos
     fetch('http://localhost:5000/api/products')
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(error => console.error("Error al obtener productos:", error));
+    
+    // Obtener categorías
+    fetch('http://localhost:5000/api/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(error => console.error("Error al obtener categorías:", error));
   }, []);
+
+  // Filtrar productos por categoría seleccionada
+  const filteredProducts = selectedCategory
+    ? products.filter(product => product.fk_category === selectedCategory)
+    : products;
 
   const addToCart = (product: Product) => {
     // Verificar stock antes de agregar al carrito
@@ -90,7 +111,7 @@ export default function App() {
         <Navbar />
 
         {/* Botón flotante carrito */}
-       <button
+        <button
           onClick={() => setIsCartOpen(!isCartOpen)}
           className="fixed top-4 right-4 z-50 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 flex items-center space-x-2"
           aria-label="Toggle carrito"
@@ -100,8 +121,6 @@ export default function App() {
           </svg>
           {totalItems > 0 && <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">{totalItems}</span>}
         </button>
-
-
 
         {/* Sidebar del carrito */}
         <div
@@ -187,27 +206,63 @@ export default function App() {
           </div>
         </section>
 
+        {/* Filtro de categorías */}
+        <section className="bg-white py-6">
+          <div className="max-w-7xl mx-auto px-4">
+            <h3 className="text-xl font-bold text-blue-800 mb-4">Categorías</h3>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`px-4 py-2 rounded ${
+                  selectedCategory === null
+                    ? "bg-blue-800 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                Todas
+              </button>
+{categories.map((cat) => (
+  <button
+    key={cat.idCategory}
+    onClick={() => setSelectedCategory(cat.idCategory)}
+    className={`px-4 py-2 rounded ${
+      selectedCategory === cat.idCategory
+        ? "bg-blue-800 text-white"
+        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    }`}
+  >
+    {cat.Category_name}
+  </button>
+))}
+
+            </div>
+          </div>
+        </section>
+
         <section className="py-10 bg-white">
           <div className="max-w-7xl mx-auto px-4">
-            <h3 className="text-xl font-bold text-blue-800 mb-6">Productos destacados</h3>
+            <h3 className="text-xl font-bold text-blue-800 mb-6">Productos</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {products.map(product => (
+              {filteredProducts.map(product => (
                 <div key={product.idProduct} className="border p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col">
-                  <img
-                    src={product.product_img || 'https://via.placeholder.com/150'}
-                    alt={product.product_name}
-                    className="h-40 w-full object-cover mb-2 rounded"
-                  />
+                 <img
+  src={`/images/${product.product_img}`}
+  alt={product.product_name}
+  className="w-full h-48 object-cover mb-4 rounded-lg"
+/>
+
                   <h4 className="text-lg font-semibold">{product.product_name}</h4>
                   <p className="text-blue-800 font-bold">{CLP.format(product.product_unitprice)}</p>
-                  <div className="flex justify-between items-center mt-4">
-                   
+                  <div className="mt-auto pt-4">
                     <button
                       onClick={() => addToCart(product)}
-                      className={`ml-2 px-4 py-2 rounded text-white ${product.stock === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+                      className={`w-full px-4 py-2 rounded text-white flex items-center justify-center ${product.stock === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
                       disabled={product.stock === 0}
                     >
-                      {product.stock === 0 ? 'Sin stock' : 'Agregar'}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 5m12-5l1.6-4M9 21h6" />
+                      </svg>
+                      {product.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
                     </button>
                   </div>
                 </div>
