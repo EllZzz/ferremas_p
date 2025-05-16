@@ -1,10 +1,15 @@
-import reviewRoutes from "./review.routes.js";
+import express from "express";
+
 import userRoutes from "./user.routes.js";
+import productRoutes from "./product.routes.js";
+import reviewRoutes from "./review.routes.js";
+import stripeRoutes from './stripe.routes.js';
 
+const router = express.Router();
 
-const routes = [
-  { path: "/api/reviews", router: reviewRoutes },
-  { path: "/api/users", router: userRoutes },
-];
+router.use("/users", userRoutes); 
+router.use("/products", productRoutes);
+router.use("/reviews", reviewRoutes);
+router.use('/stripe', stripeRoutes);
 
-export default routes;
+export default router;

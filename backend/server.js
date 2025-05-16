@@ -3,25 +3,24 @@ import cors from "cors";
 import dotenv from "dotenv";
 import models from "./models/index.js"; 
 import routes from "./routes/index.js";
+import stripeRoutes from './routes/stripe.routes.js';
+import Stripe from "stripe";
 
 dotenv.config();
 
 const app = express();
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const PORT = process.env.PORT || 5000;
-
 
 app.use(cors());
 app.use(express.json());
 
-
-app.get("/api/data", (req, res) => {
-  res.json({ message: "Hola desde Node.js y Sequelize" });
+app.use("/api", (req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl}`);
+  next();
 });
 
-routes.forEach(({ path, router }) => {
-  app.use(path, router);
-});
-
+app.use("/api", routes);
 
 models.sequelize.authenticate()
   .then(() => {
