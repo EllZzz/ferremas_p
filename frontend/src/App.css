@@ -26,4 +26,30 @@
     color: var(--foreground);
     text-decoration: none;
   }
+
+  /* Estilos para botones con fondo azul personalizado */
+  .btn-primary {
+    background-color: #193cb8;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background-color: #142a86; /* un azul más oscuro para hover */
+    outline: none;
+  }
+
+  /* Para botón flotante (carrito) */
+  .btn-cart {
+    background-color: #193cb8;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-cart:hover,
+  .btn-cart:focus {
+    background-color: #142a86;
+    outline: none;
+  }
 }
