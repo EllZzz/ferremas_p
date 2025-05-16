@@ -3,7 +3,7 @@ import sequelize from "../config/db.config.js";
 import Rol from "./rol.model.js";
 import Commune from "./commune.model.js";
 
-const User = sequelize.define("User", {
+const user = sequelize.define("user", {
   idUser: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -57,10 +57,11 @@ const User = sequelize.define("User", {
     }
   }
 }, {
-  tableName: 'User'
+  tableName: 'user', // 👈 minúscula
+  timestamps: false  // si no usas createdAt / updatedAt
 });
 
-User.belongsTo(Rol, { foreignKey: 'fk_idRol', as: 'rol' });
-User.belongsTo(Commune, { foreignKey: 'fk_idCommune', as: 'commune' });
+user.belongsTo(Rol, { foreignKey: 'fk_idRol', as: 'rol' });
+user.belongsTo(Commune, { foreignKey: 'fk_idCommune', as: 'commune' });
 
-export default User;
+export default user;
