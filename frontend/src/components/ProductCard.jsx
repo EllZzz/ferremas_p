@@ -13,7 +13,7 @@ export default function ProductCard() {
       <p className="text-sm text-gray-400 line-through mb-4">Normal: $ 94.990</p>
       <button
         type="button"
-        className="w-full border border-gray-400 text-gray-800 text-sm py-2 rounded-md hover:bg-gray-100 transition"
+        className="w-full btn-blue"
       >
         Añadir al carro
       </button>

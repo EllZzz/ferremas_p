@@ -52,4 +52,21 @@
     background-color: #142a86;
     outline: none;
   }
+  /* Clase personalizada para botón azul con letras blancas */
+.btn-blue {
+  background-color: #193cb8; /* azul */
+  color: white;              /* letras blancas */
+  padding: 0.5rem 1rem;      /* ajuste de padding */
+  border: none;              /* sin borde */
+  border-radius: 0.375rem;   /* esquinas redondeadas */
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-blue:hover, 
+.btn-blue:focus {
+  background-color: #142a86; /* azul más oscuro en hover */
+  outline: none;
+}
+
 }

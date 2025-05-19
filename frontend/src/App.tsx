@@ -129,7 +129,7 @@ export default function App() {
 
         <button
           onClick={() => setIsCartOpen(!isCartOpen)}
-          className="fixed top-4 right-4 z-50 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 flex items-center space-x-2"
+          className="fixed top-4 right-4 z-50 bg-blue-600  rounded-full p-3 shadow-lg hover:bg-blue-700 flex items-center space-x-2"
           aria-label="Toggle carrito"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -197,7 +197,7 @@ export default function App() {
             </div>
             {cart.length > 0 && (
               <button 
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                className="w-full bg-blue-600 text-blue-800 py-2 rounded hover:bg-blue-700"
                 onClick={() => alert(`Gracias por tu compra de ${CLP.format(totalPrice)}`)}
               >
                 Proceder al pago
@@ -258,7 +258,7 @@ export default function App() {
                   <div className="mt-auto pt-4">
                     <button
                       onClick={() => addToCart(product)}
-                      className={`w-full px-4 py-2 rounded text-white flex items-center justify-center ${product.stock === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+                      className={`w-full px-4 py-2 rounded text-blue-800 flex items-center justify-center ${product.stock === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
                       disabled={product.stock === 0}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

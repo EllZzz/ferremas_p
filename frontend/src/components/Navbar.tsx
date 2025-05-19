@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AuthPage from "./AuthPage";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [showAuth, setShowAuth] = useState(false);
@@ -36,21 +37,11 @@ export default function Navbar() {
             FERRE<span className="text-yellow-400">+</span>MAS
           </h1>
           <nav className="space-x-4 hidden md:block">
-            <a href="#" className="hover:text-yellow-400">
-              Inicio
-            </a>
-            <a href="#" className="hover:text-yellow-400">
-              Productos
-            </a>
-            <a href="#" className="hover:text-yellow-400">
-              Ofertas
-            </a>
-            <a href="#" className="hover:text-yellow-400">
-              Servicios
-            </a>
-            <a href="#" className="hover:text-yellow-400">
-              Contacto
-            </a>
+                <Link to="/" className="hover:text-yellow-400">Inicio</Link>
+                <Link to="/" className="hover:text-yellow-400">Productos</Link>
+                <Link to="/" className="hover:text-yellow-400">Ofertas</Link>
+                <Link to="/" className="hover:text-yellow-400">Servicios</Link>
+                <Link to="/contact" className="hover:text-yellow-400">Contacto</Link>
           </nav>
           <div className="space-x-4">
             <button>
