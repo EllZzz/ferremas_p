@@ -36,7 +36,7 @@ export default function AuthPage() {
       const role = isLogin ? response.data.role : response.data.user.role;
       if (role === 1) window.location.href = '/admin';
       else if (role === 2) window.location.href = '/vendedor';
-      else if (role === 3) window.location.href = '/cliente';
+      else if (role === 3) window.location.href = '';
       else window.location.href = '/invitado';
     } catch (error: any) {
       alert(error.response?.data?.message || 'Error en el proceso');

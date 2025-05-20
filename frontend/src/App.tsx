@@ -272,6 +272,7 @@ export default function App() {
             </div>
           </div>
         </section>
+        
 
         <section className="bg-blue-800 text-white py-10 text-center">
           <h2 className="text-2xl font-bold mb-2">¿Tienes dudas? ¡Estamos para ayudarte!</h2>

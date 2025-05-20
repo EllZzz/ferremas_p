@@ -12,7 +12,8 @@ const Brand = sequelize.define("Brand", {
     allowNull: false
   }
 }, {
-  tableName: 'Brand'
+  tableName: 'Brand',
+  timestamps: false // ⬅️ Esto es importante si tu tabla no tiene createdAt/updatedAt
 });
 
 export default Brand;
