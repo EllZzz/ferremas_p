@@ -1,6 +1,6 @@
 import models from "../models/index.js";
 
-// Obtener todos los productos con sus relaciones
+
 export const getAllProducts = async (req, res) => {
   try {
     const products = await models.Product.findAll({
@@ -17,7 +17,7 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-// Obtener un producto por ID
+
 export const getProductById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -39,7 +39,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// Crear un nuevo producto
+
 export const createProduct = async (req, res) => {
   try {
     const newProduct = await models.Product.create(req.body);
@@ -50,7 +50,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// Actualizar un producto
+
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
@@ -67,7 +67,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// Eliminar un producto
+
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
   try {

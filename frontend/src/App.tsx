@@ -21,7 +21,7 @@ interface Category {
   Category_name: string;
 }
 
-// Lista de imágenes genéricas de herramientas desde Unsplash
+
 const toolImages = [
   "/images/tools/taladro_bosch.jpg.jpg",
   "/images/tools/destornillador.jpg",

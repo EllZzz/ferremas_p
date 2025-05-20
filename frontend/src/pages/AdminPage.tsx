@@ -58,8 +58,6 @@ export default function AdminPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow w-screen max-w-none px-4 lg:px-8 py-8 space-y-12">
-
-        {/* Tabla de productos */}
         <section>
           <h1 className="text-4xl font-bold text-blue-800 mb-6">Lista de Productos</h1>
           <table className="w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
