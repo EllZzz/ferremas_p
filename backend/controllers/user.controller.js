@@ -1,6 +1,6 @@
 import models from "../models/index.js";
 
-export const getAllUsers = async (res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const users = await models.User.findAll({
       include: [

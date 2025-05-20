@@ -4,8 +4,8 @@ export const getAllProducts = async (req, res) => {
   try {
     const products = await models.Product.findAll({
       include: [
-  { model: models.Brand, as: "productBrand" },
-  { model: models.Category, as: "productCategory" }
+  { model: models.Brand, as: "brand" },
+  { model: models.Category, as: "category" }
 ]
 
     });
@@ -23,5 +23,24 @@ export const createProduct = async (req, res) => {
   } catch (error) {
     console.error("Error al crear producto:", error);
     res.status(400).json({ error: "Error al crear producto" });
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deleted = await models.Product.destroy({
+      where: { idProduct: id },
+    });
+
+    if (deleted) {
+      res.status(200).json({ message: "Producto eliminado correctamente" });
+    } else {
+      res.status(404).json({ error: "Producto no encontrado" });
+    }
+  } catch (error) {
+    console.error("Error al eliminar producto:", error);
+    res.status(500).json({ error: "Error al eliminar producto" });
   }
 };

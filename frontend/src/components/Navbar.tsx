@@ -39,8 +39,6 @@ export default function Navbar() {
           <nav className="space-x-4 hidden md:block">
                 <Link to="/" className="hover:text-yellow-400">Inicio</Link>
                 <Link to="/" className="hover:text-yellow-400">Productos</Link>
-                <Link to="/" className="hover:text-yellow-400">Ofertas</Link>
-                <Link to="/" className="hover:text-yellow-400">Servicios</Link>
                 <Link to="/contact" className="hover:text-yellow-400">Contacto</Link>
           </nav>
           <div className="space-x-4">

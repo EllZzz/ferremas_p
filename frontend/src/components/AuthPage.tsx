@@ -48,7 +48,7 @@ export default function AuthPage() {
       <div className="flex justify-center mb-6">
         <button
           className={`px-4 py-2 rounded-l ${
-            isLogin ? 'bg-blue-600 text-white' : 'bg-gray-200'
+            isLogin ? 'bg-blue-600 ' : 'bg-gray-200'
           }`}
           onClick={() => setIsLogin(true)}
         >
@@ -56,7 +56,7 @@ export default function AuthPage() {
         </button>
         <button
           className={`px-4 py-2 rounded-r ${
-            !isLogin ? 'bg-blue-600 text-white' : 'bg-gray-200'
+            !isLogin ? 'bg-blue-600 ' : 'bg-gray-200'
           }`}
           onClick={() => setIsLogin(false)}
         >
@@ -129,7 +129,7 @@ export default function AuthPage() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-blue-600 py-2 rounded hover:bg-blue-700"
         >
           {isLogin ? 'Ingresar' : 'Registrarse'}
         </button>
