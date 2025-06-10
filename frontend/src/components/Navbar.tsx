@@ -7,7 +7,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Barra superior */}
       <div className="bg-yellow-400 w-full h-8 self-center flex justify-center items-center text-yellow-700 font-bold gap-6">
         <div className="flex items-end text-sm gap-2">
           <svg viewBox="0 0 24 24" fill="currentColor" className="size-6">
@@ -30,7 +29,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Header principal */}
+  
       <header className="bg-blue-800 text-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
           <h1 className="text-2xl font-bold">
@@ -56,7 +55,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Modal login/registro */}
+      
       {showAuth && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">

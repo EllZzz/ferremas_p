@@ -13,7 +13,7 @@ export default function Contact() {
           ¿Tienes alguna duda, comentario o necesitas ayuda? Completa el formulario y nos pondremos en contacto contigo.
         </p>
 
-        <form className="flex flex-col gap-4 w-full">
+        <form className="flex flex-col gap-4 w-full"> 
           <div>
             <label className="block mb-1 font-semibold" htmlFor="name">Nombre</label>
             <input
