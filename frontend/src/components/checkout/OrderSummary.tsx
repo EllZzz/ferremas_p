@@ -31,11 +31,11 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   const getShippingMethodText = () => {
     switch (shippingMethod) {
       case 'standard':
-        return 'Estándar (3-5 días hábiles) - $4.990';
+        return 'Estándar (3-5 días hábiles)';
       case 'express':
-        return 'Express (1-2 días hábiles) - $7.990';
+        return 'Express (1-2 días hábiles)';
       case 'pickup':
-        return 'Retiro en Tienda - Gratis';
+        return 'Retiro en Tienda';
       default:
         return 'Envío';
     }
