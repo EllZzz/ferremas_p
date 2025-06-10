@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import OrderSummary from '../components/checkout/OrderSummary';
 import ShippingForm from '../components/checkout/ShippingForm';
+import type { ShippingMethod } from '../components/checkout/ShippingForm';
 import PaymentForm from '../components/checkout/PaymentForm';
 import OrderConfirmation from '../components/checkout/OrderConfirmation';
 import CheckoutSteps from '../components/checkout/CheckoutSteps';
@@ -15,6 +16,7 @@ const CheckoutPage: React.FC = () => {
     const [orderComplete, setOrderComplete] = useState(false);
     const [orderNumber, setOrderNumber] = useState('');
     const { cart: cartItems, clearCart } = useCart();
+    const [shippingMethod, setShippingMethod] = useState<ShippingMethod>('standard');
 
     const [shippingInfo, setShippingInfo] = useState({
         firstName: '',
@@ -124,6 +126,8 @@ const CheckoutPage: React.FC = () => {
                                 shippingInfo={shippingInfo}
                                 onSubmit={handleShippingSubmit}
                                 onShippingCostChange={setShippingCost}
+                                shippingMethod={shippingMethod}
+                                onShippingMethodChange={setShippingMethod}
                             />
                         )}
 
@@ -158,6 +162,7 @@ const CheckoutPage: React.FC = () => {
                             shipping={shippingCost}
                             tax={tax}
                             total={total}
+                            shippingMethod={shippingMethod}
                         />
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 export type ShippingMethod = 'standard' | 'express' | 'pickup';
 
 interface ShippingFormProps {
@@ -12,14 +12,22 @@ interface ShippingFormProps {
     zipCode: string;
     country: string;
   };
+  shippingMethod: ShippingMethod;
+  onShippingCostChange: (cost: number) => void;
+  onShippingMethodChange: (method: ShippingMethod) => void;
   onSubmit: (data: ShippingFormProps['shippingInfo'], shippingMethod: ShippingMethod) => void;
 }
 
-const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) => {
+
+const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, shippingMethod, onSubmit, onShippingMethodChange, onShippingCostChange, }) => {
   const [formData, setFormData] = useState(shippingInfo);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [shippingMethod, setShippingMethod] = useState<ShippingMethod>('standard');
+  useEffect(() => {
+  if (shippingMethod === 'standard') onShippingCostChange(4990);
+  else if (shippingMethod === 'express') onShippingCostChange(7990);
+  else if (shippingMethod === 'pickup') onShippingCostChange(0);
+}, [shippingMethod, onShippingCostChange]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -27,7 +35,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
       ...formData,
       [name]: value
     });
-    
+
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -36,14 +44,9 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
     }
   };
 
-  const handleShippingMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const method = e.target.id.split('-')[1] as ShippingMethod;
-    setShippingMethod(method);
-  };
-
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.firstName.trim()) newErrors.firstName = 'El nombre es requerido';
     if (!formData.lastName.trim()) newErrors.lastName = 'El apellido es requerido';
     if (!formData.email.trim()) {
@@ -57,14 +60,14 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
     if (!formData.zipCode.trim()) {
       newErrors.zipCode = 'El código postal es requerido';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       onSubmit(formData, shippingMethod);
     }
@@ -73,7 +76,7 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h2 className="text-xl font-semibold mb-4">Información de Despacho</h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-2">
           <div>
@@ -205,15 +208,16 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
 
         <div className="mt-8">
           <h3 className="text-lg font-medium text-gray-900 mb-3">Método de Envío</h3>
-          
+
           <div className="space-y-3">
             <div className="flex items-center">
               <input
+                type="radio"
                 id="shipping-standard"
                 name="shipping-method"
-                type="radio"
-                defaultChecked
-                onChange={handleShippingMethodChange}
+                value="standard"
+                checked={shippingMethod === 'standard'}
+                onChange={() => onShippingMethodChange('standard')}
                 className="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"
               />
               <label htmlFor="shipping-standard" className="ml-3 flex flex-col">
@@ -221,13 +225,15 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
                 <span className="block text-sm text-gray-500">3-5 días hábiles - $4.990</span>
               </label>
             </div>
-            
+
             <div className="flex items-center">
               <input
+                type="radio"
                 id="shipping-express"
                 name="shipping-method"
-                type="radio"
-                onChange={handleShippingMethodChange}
+                value="express"
+                checked={shippingMethod === 'express'}
+                onChange={() => onShippingMethodChange('express')}
                 className="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"
               />
               <label htmlFor="shipping-express" className="ml-3 flex flex-col">
@@ -235,13 +241,15 @@ const ShippingForm: React.FC<ShippingFormProps> = ({ shippingInfo, onSubmit }) =
                 <span className="block text-sm text-gray-500">1-2 días hábiles - $7.990</span>
               </label>
             </div>
-            
+
             <div className="flex items-center">
               <input
+                type="radio"
                 id="shipping-pickup"
                 name="shipping-method"
-                type="radio"
-                onChange={handleShippingMethodChange}
+                value="pickup"
+                checked={shippingMethod === 'pickup'}
+                onChange={() => onShippingMethodChange('pickup')}
                 className="h-4 w-4 text-yellow-600 border-gray-300 focus:ring-yellow-500"
               />
               <label htmlFor="shipping-pickup" className="ml-3 flex flex-col">

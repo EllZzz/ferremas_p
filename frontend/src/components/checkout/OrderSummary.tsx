@@ -31,20 +31,21 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   const getShippingMethodText = () => {
     switch (shippingMethod) {
       case 'standard':
-        return 'Estándar (3-5 días)';
+        return 'Estándar (3-5 días hábiles) - $4.990';
       case 'express':
-        return 'Express (1-2 días)';
+        return 'Express (1-2 días hábiles) - $7.990';
       case 'pickup':
-        return 'Retiro en Tienda';
+        return 'Retiro en Tienda - Gratis';
       default:
         return 'Envío';
     }
   };
 
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
       <h2 className="text-xl font-semibold mb-4">Resumen de Compra</h2>
-      
+
       <div className="space-y-4 mb-6">
         {items.map(item => (
           <div key={item.id} className="flex items-center space-x-4 py-2">
@@ -61,20 +62,22 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           </div>
         ))}
       </div>
-      
+
       <div className="space-y-2 pt-4 border-t border-gray-200">
         <div className="flex justify-between text-sm">
           <p className="text-gray-600">Subtotal</p>
           <p className="text-gray-900 font-medium">${formatPrice(subtotal)}</p>
         </div>
-        <div className="flex justify-between text-sm">
-          <p className="text-gray-600">Despacho</p>
-          <p className="text-gray-900 font-medium">${formatPrice(shipping)}</p>
-        </div>
+
         <div className="flex justify-between text-sm">
           <p className="text-gray-600">Método de envío</p>
           <p className="text-gray-900 font-medium">{getShippingMethodText()}</p>
         </div>
+        <div className="flex justify-between text-sm">
+          <p className="text-gray-600">Despacho</p>
+          <p className="text-gray-900 font-medium">${formatPrice(shipping)}</p>
+        </div>
+
         <div className="flex justify-between text-sm">
           <p className="text-gray-600">IVA (19%)</p>
           <p className="text-gray-900 font-medium">${formatPrice(tax)}</p>
@@ -84,7 +87,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           <p className="text-orange-600">${formatPrice(total)}</p>
         </div>
       </div>
-      
+
       <div className="mt-6 pt-6 border-t border-gray-200">
         <div className="flex items-center justify-between">
           <div className="text-sm text-gray-500">
