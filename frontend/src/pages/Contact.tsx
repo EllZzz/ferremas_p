@@ -1,20 +1,19 @@
-import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import '../App.css'
 
 export default function Contact() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100"> {/* Ocupa toda la altura */}
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
 
-      <main className="w-screen max-w-none px-4 lg:px-8"> {/* Ocupa toda la altura y ancho */}
+      <main className="w-screen max-w-none px-4 lg:px-8">
         <h1 className="text-3xl font-bold text-blue-800 mb-4">Contáctanos</h1>
         <p className="mb-6 text-gray-700">
           ¿Tienes alguna duda, comentario o necesitas ayuda? Completa el formulario y nos pondremos en contacto contigo.
         </p>
 
-        <form className="flex flex-col gap-4 w-full"> {/* El formulario también ocupa el ancho */}
+        <form className="flex flex-col gap-4 w-full">
           <div>
             <label className="block mb-1 font-semibold" htmlFor="name">Nombre</label>
             <input
@@ -47,7 +46,7 @@ export default function Contact() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-800 transition"
           >
             Enviar
           </button>

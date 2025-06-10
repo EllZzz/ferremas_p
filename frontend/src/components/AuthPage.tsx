@@ -129,7 +129,7 @@ export default function AuthPage() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 py-2 rounded hover:bg-blue-700"
+          className="w-full bg-blue-600 py-2 rounded hover:bg-blue-800"
         >
           {isLogin ? 'Ingresar' : 'Registrarse'}
         </button>

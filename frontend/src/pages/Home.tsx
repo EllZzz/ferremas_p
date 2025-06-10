@@ -7,7 +7,7 @@ export default function Home() {
                                 <div className="p-6 text-center">
                                     <h2 className="text-2xl font-bold text-blue-800">¡Aprovecha nuestras ofertas de abril!</h2>
                                     <p className="mt-2 text-gray-700">Hasta 40% en herramientas eléctricas</p>
-                                    <a href="#" className="mt-4 inline-block bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-700">Ver productos</a>
+                                    <a href="#" className="mt-4 inline-block bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-800">Ver productos</a>
                                 </div>
                         </div>
                     </div>

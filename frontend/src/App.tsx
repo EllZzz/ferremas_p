@@ -1,7 +1,9 @@
-import './App.css'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import { useEffect, useState } from 'react'
+import './App.css';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from "./context/CartContext";
 
 interface Product {
   idProduct: number;
@@ -12,20 +14,15 @@ interface Product {
   fk_category: number;
 }
 
-interface CartItem extends Product {
-  quantity: number;
-}
-
 interface Category {
   idCategory: number;
   Category_name: string;
 }
 
-// Lista de imágenes genéricas de herramientas desde Unsplash
 const toolImages = [
   "/images/tools/taladro_bosch.jpg.jpg",
   "/images/tools/destornillador.jpg",
-  "/images/tools/cierra.jpg",    
+  "/images/tools/cierra.jpg",
   "/images/tools/martillo.jpg",
   "/images/tools/taladro2.jpg",
   "/images/tools/taladro3.jpg",
@@ -48,12 +45,12 @@ const toolImages = [
   "/images/tools/herramienta17.jpg",
 ];
 
-
 export default function App() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const { cart, addToCart, removeFromCart, updateQuantity } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
@@ -61,7 +58,7 @@ export default function App() {
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(error => console.error("Error al obtener productos:", error));
-    
+
     fetch('http://localhost:5000/api/categories')
       .then(res => res.json())
       .then(data => setCategories(data))
@@ -71,46 +68,6 @@ export default function App() {
   const filteredProducts = selectedCategory
     ? products.filter(product => product.fk_category === selectedCategory)
     : products;
-
-  const addToCart = (product: Product) => {
-    setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.idProduct === product.idProduct);
-      if (existingItem) {
-        if (existingItem.quantity < product.stock) {
-          return prevCart.map(item =>
-            item.idProduct === product.idProduct
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          );
-        }
-        return prevCart;
-      } else {
-        if (product.stock > 0) {
-          return [...prevCart, { ...product, quantity: 1 }];
-        }
-        return prevCart;
-      }
-    });
-  };
-
-  const removeFromCart = (idProduct: number) => {
-    setCart(prevCart => prevCart.filter(item => item.idProduct !== idProduct));
-  };
-
-  const updateQuantity = (idProduct: number, quantity: number) => {
-    if (quantity < 1) {
-      removeFromCart(idProduct);
-      return;
-    }
-    const product = products.find(p => p.idProduct === idProduct);
-    if (product && quantity <= product.stock) {
-      setCart(prevCart =>
-        prevCart.map(item =>
-          item.idProduct === idProduct ? { ...item, quantity } : item
-        )
-      );
-    }
-  };
 
   const totalPrice = cart.reduce((acc, item) => acc + item.product_unitprice * item.quantity, 0);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -129,7 +86,7 @@ export default function App() {
 
         <button
           onClick={() => setIsCartOpen(!isCartOpen)}
-          className="fixed top-4 right-4 z-50 bg-blue-600  rounded-full p-3 shadow-lg hover:bg-blue-700 flex items-center space-x-2"
+          className="fixed top-4 right-4 z-50 bg-blue-600 rounded-full p-3 shadow-lg hover:bg-blue-700 flex items-center space-x-2"
           aria-label="Toggle carrito"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -196,15 +153,17 @@ export default function App() {
               <span>{CLP.format(totalPrice)}</span>
             </div>
             {cart.length > 0 && (
-              <button 
-                className="w-full bg-blue-600 text-blue-800 py-2 rounded hover:bg-blue-700"
-                onClick={() => alert(`Gracias por tu compra de ${CLP.format(totalPrice)}`)}
+              <button
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-800"
+                onClick={() => navigate('/checkout')}
               >
                 Proceder al pago
               </button>
             )}
           </div>
         </div>
+
+        {/* Resto del código de categorías y productos */}
 
         <section className="bg-gray-100">
           <div className="max-w-7xl mx-auto p-4">
@@ -241,43 +200,31 @@ export default function App() {
           </div>
         </section>
 
-        <section className="py-10 bg-white">
-          <div className="max-w-7xl mx-auto px-4">
-            <h3 className="text-xl font-bold text-blue-800 mb-6">Productos</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {filteredProducts.map(product => (
-                <div key={product.idProduct} className="border p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col">
+        <section className="py-10 bg-white max-w-7xl mx-auto px-4">
+          <h3 className="text-xl font-bold text-blue-800 mb-6">Productos</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map(product => {
+              const randomImage = toolImages[Math.floor(Math.random() * toolImages.length)];
+              return (
+                <div key={product.idProduct} className="bg-gray-100 p-4 rounded shadow flex flex-col">
                   <img
-  src={toolImages[product.idProduct % toolImages.length]}
-  alt="Herramienta"
-  className="w-full h-48 object-cover mb-4 rounded-lg"
-/>
-
-                  <h4 className="text-lg font-semibold">{product.product_name}</h4>
-                  <p className="text-blue-800 font-bold">{CLP.format(product.product_unitprice)}</p>
-                  <div className="mt-auto pt-4">
-                    <button
-                      onClick={() => addToCart(product)}
-                      className={`w-full px-4 py-2 rounded text-blue-800 flex items-center justify-center ${product.stock === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
-                      disabled={product.stock === 0}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 5m12-5l1.6-4M9 21h6" />
-                      </svg>
-                      {product.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
-                    </button>
-                  </div>
+                    src={randomImage}
+                    alt={product.product_name}
+                    className="h-48 w-full object-cover rounded"
+                  />
+                  <h4 className="mt-2 font-semibold">{product.product_name}</h4>
+                  <p className="text-gray-700">{CLP.format(product.product_unitprice)}</p>
+                  <button
+                    className="mt-auto bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
+                    disabled={product.stock === 0}
+                    onClick={() => addToCart(product)}
+                  >
+                    {product.stock === 0 ? "Agotado" : "Agregar al carrito"}
+                  </button>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        </section>
-        
-
-        <section className="bg-blue-800 text-white py-10 text-center">
-          <h2 className="text-2xl font-bold mb-2">¿Tienes dudas? ¡Estamos para ayudarte!</h2>
-          <p className="mb-4">Contáctanos para cotizaciones, productos especiales o ayuda personalizada.</p>
-          <a href="#" className="bg-yellow-400 text-blue-800 px-6 py-3 rounded hover:bg-yellow-300">Habla con un asesor</a>
         </section>
 
         <Footer />
