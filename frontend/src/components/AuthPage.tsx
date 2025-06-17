@@ -44,20 +44,20 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 bg-white p-6 rounded-lg shadow-md">
-      <div className="flex justify-center mb-6">
+    <div className="max-w-md mx-auto mt-12 p-6 rounded-lg">
+      <div className="flex justify-center mb-6 gap-4">
         <button
           className={`px-4 py-2 rounded-l ${
-            isLogin ? 'bg-blue-600 ' : 'bg-gray-200'
-          }`}
+            isLogin ? 'bg-blue-800 text-white' : 'bg-gray-200 text-gray-500'
+          } !transition-all duration-200`}
           onClick={() => setIsLogin(true)}
         >
           Iniciar sesión
         </button>
         <button
           className={`px-4 py-2 rounded-r ${
-            !isLogin ? 'bg-blue-600 ' : 'bg-gray-200'
-          }`}
+            !isLogin ? 'bg-blue-800 text-white' : 'bg-gray-200 text-gray-500'
+          } !transition-all duration-200`}
           onClick={() => setIsLogin(false)}
         >
           Registrarse
@@ -129,7 +129,7 @@ export default function AuthPage() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 py-2 rounded hover:bg-blue-800"
+          className="w-full bg-blue-800 py-2 my-5 rounded text-white hover:bg-blue-700 !transition-colors !duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLogin ? 'Ingresar' : 'Registrarse'}
         </button>
@@ -150,7 +150,7 @@ function InputWithIcon({
       </div>
       <input
         {...props}
-        className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full pl-10 pr-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200"
       />
     </div>
   );

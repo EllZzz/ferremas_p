@@ -5,6 +5,11 @@ import models from "./models/index.js";
 import routes from "./routes/index.js";
 import stripeRoutes from './routes/stripe.routes.js';
 import Stripe from "stripe";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -19,8 +24,8 @@ app.use("/api", (req, res, next) => {
   console.log(`[${req.method}] ${req.originalUrl}`);
   next();
 });
-
 app.use("/api", routes);
+app.use("/images", express.static(path.join(__dirname, "static/images")));
 
 models.sequelize.authenticate()
   .then(() => {

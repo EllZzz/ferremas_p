@@ -1,60 +1,56 @@
-import React from 'react';
-import { Check } from 'lucide-react';
+import {
+  ShoppingCart,
+  Truck,
+  CreditCard,
+  CheckCircle,
+} from "lucide-react";
 
-interface CheckoutStepsProps {
+interface Props {
   steps: string[];
-  currentStep: number;
+  currentStep: number; // 0-based index
 }
 
-const CheckoutSteps: React.FC<CheckoutStepsProps> = ({ steps, currentStep }) => {
+const icons = [
+  <ShoppingCart key="cart" className="w-5 h-5 text-white" />,
+  <Truck key="shipping" className="w-5 h-5 text-white" />,
+  <CreditCard key="payment" className="w-5 h-5 text-white" />,
+  <CheckCircle key="confirm" className="w-5 h-5 text-white" />,
+];
+
+export default function CheckoutSteps({ steps, currentStep }: Props) {
   return (
-    <div className="py-6">
-      <nav aria-label="Progress">
-        <ol role="list" className="flex items-center">
-          {steps.map((step, index) => (
-            <li key={step} className={`relative ${index < steps.length - 1 ? 'pr-8 sm:pr-20' : ''} flex-1 ${index < steps.length - 1 ? '' : ''}`}>
-              <div className="flex items-center">
-                <div
-                  className={`relative flex h-8 w-8 items-center justify-center rounded-full ${
-                    index < currentStep
-                      ? 'bg-blue-600'
-                      : index === currentStep
-                      ? 'border-2 border-blue-600 bg-white'
-                      : 'border-2 border-gray-300 bg-white'
-                  }`}
-                >
-                  {index < currentStep ? (
-                    <Check className="h-5 w-5 text-white" aria-hidden="true" />
-                  ) : (
-                    <span
-                      className={`h-2.5 w-2.5 rounded-full ${
-                        index === currentStep ? 'bg-blue-600' : 'bg-transparent'
-                      }`}
-                      aria-hidden="true"
-                    />
-                  )}
-                </div>
-                {index < steps.length - 1 && (
-                  <div
-                    className={`h-0.5 w-20 ${
-                      index < currentStep ? 'bg-blue-600' : 'bg-gray-300'
-                    }`}
-                  />
-                )}
-              </div>
-              <div
-                className={`mt-2 flex justify-center text-sm font-medium ${
-                  index <= currentStep ? 'text-blue-600' : 'text-gray-500'
-                }`}
-              >
-                {step}
-              </div>
-            </li>
-          ))}
-        </ol>
-      </nav>
+    <div className="flex justify-between items-center w-full relative">
+      {steps.map((label, index) => {
+        const isCompleted = currentStep > index;
+        const isActive = currentStep === index;
+
+        return (
+          <div key={label} className="flex-1 flex flex-col items-center relative">
+            {/* Línea de conexión izquierda (omitida en el primer ítem) */}
+            {index !== 0 && (
+              <div className="absolute top-5 -left-1/2 w-full h-0.5 bg-gray-300 z-0" />
+            )}
+
+            {/* Círculo del ícono */}
+            <div
+              className={`z-10 w-10 h-10 rounded-full flex items-center justify-center
+                ${isCompleted ? "bg-green-500" :
+                  isActive ? "bg-blue-700 shadow-lg" :
+                  "bg-gray-300"}
+              `}
+            >
+              {icons[index]}
+            </div>
+
+            {/* Etiqueta */}
+            <p className={`mt-2 text-sm text-center
+              ${isActive ? "text-blue-700 font-semibold" : "text-gray-500"}
+            `}>
+              {label}
+            </p>
+          </div>
+        );
+      })}
     </div>
   );
-};
-
-export default CheckoutSteps;
+}

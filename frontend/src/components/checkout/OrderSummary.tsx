@@ -41,7 +41,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     }
   };
 
-
   return (
     <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
       <h2 className="text-xl font-semibold mb-4">Resumen de Compra</h2>
@@ -93,8 +92,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
           <div className="text-sm text-gray-500">
             <p>Pago seguro por</p>
             <div className="flex items-center space-x-2 mt-2">
-              <img src="https://www.webpay.cl/assets/img/logo-webpay.png" alt="WebPay" className="h-6" />
-              <img src="https://www.khipu.com/assets/khipu-logo.png" alt="Khipu" className="h-6" />
+              <img src="images/webpay-logo-1.webp" alt="WebPay" className="h-13" />
             </div>
           </div>
           <div className="flex items-center">

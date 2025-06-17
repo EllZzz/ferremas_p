@@ -68,10 +68,10 @@ const CheckoutPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-zinc-100">
+        <div className="min-h-screen w-screen bg-zinc-100">
             <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
                 <div className="mb-8 flex items-center">
-                    <Wrench className="h-8 w-8 text-blue-800 mr-3" />
+                    <Wrench className="h-8 w-8 text-blue-700 mr-3" />
                     <h1 className="text-3xl font-bold text-gray-900">Finalizar Compra</h1>
                 </div>
 
@@ -99,7 +99,11 @@ const CheckoutPage: React.FC = () => {
                                         <div className="space-y-4 mb-6">
                                             {cartItems.map(item => (
                                                 <div key={item.idProduct} className="flex items-center space-x-4 py-4 border-b border-gray-200 last:border-b-0">
-                                                    <img src={item.product_img} alt={item.product_name} className="w-16 h-16 object-cover rounded-md" />
+                                                    <img
+                                                        src={`http://localhost:5000${item.product_img}`}
+                                                        alt={item.product_name}
+                                                        className="w-16 h-16 object-cover rounded-md"
+                                                    />
                                                     <div className="flex-1">
                                                         <h3 className="font-medium text-gray-900">{item.product_name}</h3>
                                                         <p className="text-gray-600">Cantidad: {item.quantity}</p>
@@ -112,7 +116,7 @@ const CheckoutPage: React.FC = () => {
                                         </div>
                                         <button
                                             onClick={handleNextStep}
-                                            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium transition duration-150 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                            className="w-full bg-blue-700 text-white py-3 px-4 rounded-md font-medium transition duration-150 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                         >
                                             Continuar al Despacho
                                         </button>
@@ -156,7 +160,7 @@ const CheckoutPage: React.FC = () => {
                                 name: item.product_name,
                                 price: item.product_unitprice,
                                 quantity: item.quantity,
-                                image: item.product_img
+                                image: `http://localhost:5000${item.product_img}`
                             }))}
                             subtotal={subtotal}
                             shipping={shippingCost}
