@@ -70,7 +70,7 @@ export default function ProductGrid() {
           {filteredProducts.map(product => (
             <div key={product.idProduct} className="bg-gray-100 p-4 rounded shadow flex flex-col">
               <img
-                src={`/images/tools/${product.product_img}`} // o la lógica que tengas
+                src={`/images/tools/${product.product_img}`}
                 alt={product.product_name}
                 className="h-48 w-full object-cover rounded"
               />

@@ -3,7 +3,11 @@ import models from "../models/index.js";
 export const getAllBrands = async (req, res) => {
   try {
     const brands = await models.Brand.findAll();
-    res.json(brands);
+    const renamed = brands.map(({ idBrand, brand_name }) => ({
+      idBrand,
+      name: brand_name
+    }));
+    res.json(renamed);
   } catch (error) {
     console.error("Error al obtener marcas:", error);
     res.status(500).json({ error: "Error del servidor" });
@@ -23,8 +27,9 @@ export const getBrandById = async (req, res) => {
 
 export const createBrand = async (req, res) => {
   try {
-    const newBrand = await models.Brand.create(req.body);
-    res.status(201).json(newBrand);
+    const { name } = req.body;
+    const newBrand = await models.Brand.create({ brand_name: name });
+    res.status(201).json({ idBrand: newBrand.idBrand, name: newBrand.brand_name });
   } catch (error) {
     console.error("Error al crear marca:", error);
     res.status(400).json({ error: "Error al crear marca" });
@@ -36,8 +41,9 @@ export const updateBrand = async (req, res) => {
     const brand = await models.Brand.findByPk(req.params.id);
     if (!brand) return res.status(404).json({ error: "Marca no encontrada" });
 
-    await brand.update(req.body);
-    res.json(brand);
+    const { name } = req.body;
+    await brand.update({ brand_name: name });
+    res.json({ idBrand: brand.idBrand, name: brand.brand_name });
   } catch (error) {
     console.error("Error al actualizar marca:", error);
     res.status(400).json({ error: "Error al actualizar marca" });

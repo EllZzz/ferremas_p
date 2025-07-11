@@ -6,8 +6,8 @@ export const getAllProducts = async (req, res) => {
   try {
     const products = await models.Product.findAll({
       include: [
-        { model: models.Brand, as: "brand" },
-        { model: models.Category, as: "category" }
+        { model: models.Brand, as: "productBrand", attributes: [["brand_name", "name"]] },
+        { model: models.Category, as: "productCategory", attributes: [["Category_name", "name"]] }
       ]
     });
     res.status(200).json(products);

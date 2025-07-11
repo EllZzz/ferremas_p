@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CartSidebar from "./CartSideBar";
+import CartSidebar from "./CartSidebar";
 import { useCart } from "../context/CartContext";
 import AuthPage from "./AuthPage";
 

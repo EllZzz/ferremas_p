@@ -14,7 +14,7 @@ interface Product {
 
 interface Category {
   idCategory: number;
-  Category_name: string;
+  name: string;
 }
 
 const slides = [
@@ -112,14 +112,14 @@ export default function App() {
                 onClick={() => setSelectedCategory(cat.idCategory)}
                 className={`px-4 py-2 rounded ${selectedCategory === cat.idCategory ? "bg-blue-800 text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
               >
-                {cat.Category_name}
+                {cat.name}
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Productos aleatorios */}
+      {/* Productos */}
       <section className="py-10 bg-white max-w-7xl mx-auto px-4">
         <h3 className="text-xl font-bold text-blue-800 mb-6">Productos destacados</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
