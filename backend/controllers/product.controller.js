@@ -20,11 +20,12 @@ export const getAllProducts = async (req, res) => {
 // GET /api/products/:id
 export const getProductById = async (req, res) => {
   const { id } = req.params;
+
   try {
     const product = await models.Product.findByPk(id, {
       include: [
-        { model: models.Brand, as: "brand" },
-        { model: models.Category, as: "category" }
+        { model: models.Brand, as: "productBrand", attributes: [["brand_name", "name"]] },
+        { model: models.Category, as: "productCategory", attributes: [["Category_name", "name"]] }
       ]
     });
 

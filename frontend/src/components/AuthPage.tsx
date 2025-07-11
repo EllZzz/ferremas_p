@@ -21,27 +21,33 @@ export default function AuthPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const url = isLogin
-        ? 'http://localhost:5000/api/auth/login'
-        : 'http://localhost:5000/api/auth/register';
-      const response = await axios.post(url, formData);
-      alert(
-        `${isLogin ? 'Bienvenido' : 'Registro exitoso'}: ${
-          response.data.name || response.data.user.name
-        }`
-      );
+  e.preventDefault();
+  try {
+    const url = isLogin
+      ? 'http://localhost:5000/api/auth/login'
+      : 'http://localhost:5000/api/auth/register';
+    
+    const response = await axios.post(url, formData);
+    const data = response.data;
 
-      const role = isLogin ? response.data.role : response.data.user.role;
-      if (role === 1) window.location.href = '/admin';
-      else if (role === 2) window.location.href = '/vendedor';
-      else if (role === 3) window.location.href = '';
-      else window.location.href = '/invitado';
-    } catch (error: any) {
-      alert(error.response?.data?.message || 'Error en el proceso');
-    }
-  };
+    if (isLogin && data.token) {
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+
+}
+
+
+    alert(`${isLogin ? 'Bienvenido' : 'Registro exitoso'}: ${data.name || data.user.name}`);
+
+    const role = isLogin ? data.role : data.user.role;
+    if (role === 1) window.location.href = '/admin';
+    else if (role === 2) window.location.href = '/vendedor';
+    else if (role === 3) window.location.href = '/';
+    else window.location.href = '/';
+  } catch (error: any) {
+    alert(error.response?.data?.message || 'Error en el proceso');
+  }
+};
 
   return (
     <div className="max-w-md mx-auto mt-12 p-6 rounded-lg">

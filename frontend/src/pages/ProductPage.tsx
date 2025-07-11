@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useCart } from "../context/CartContext";
 import { ChevronDown, ChevronUp, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   idProduct: number;
@@ -35,6 +36,7 @@ export default function Productos() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
+  const navigate = useNavigate();
 
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
@@ -204,38 +206,40 @@ export default function Productos() {
             Ordenar por precio: {sortOrder === "asc" ? "Ascendente" : "Descendente"}
           </button>
         </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+          {filteredProducts.map(product => {
+            const image = product.product_img
+              ? `http://localhost:5000${product.product_img}`
+              : "/images/default-tool.jpg";
 
-        {filteredProducts.length === 0 ? (
-          <p className="text-gray-500">No se encontraron productos.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredProducts.map(product => {
-              const image = product.product_img
-                ? `http://localhost:5000${product.product_img}`
-                : "/images/default-tool.jpg";
-
-              return (
-                <div key={product.idProduct} className="bg-white p-4 rounded shadow flex flex-col">
-                  <img
-                    src={image}
-                    alt={product.product_name}
-                    className="h-48 w-full object-cover rounded"
-                  />
-                  <h4 className="mt-2 font-semibold">{product.product_name}</h4>
-                  <p className="text-gray-500 text-sm">{product.brand_name}</p>
-                  <p className="text-gray-700">{CLP.format(product.product_unitprice)}</p>
-                  <button
-                    className="mt-auto bg-blue-800 text-white py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
-                    disabled={product.stock === 0}
-                    onClick={() => addToCart(product)}
-                  >
-                    {product.stock === 0 ? "Agotado" : "Agregar al carrito"}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        )}
+            return (
+              <div
+                key={product.idProduct}
+                className="bg-white p-4 rounded shadow flex flex-col cursor-pointer hover:shadow-lg transition"
+                onClick={() => navigate(`/products/${product.idProduct}`)}
+              >
+                <img
+                  src={image}
+                  alt={product.product_name}
+                  className="h-48 w-full object-cover rounded"
+                />
+                <h4 className="mt-2 font-semibold">{product.product_name}</h4>
+                <p className="text-gray-500 text-sm">{product.brand_name}</p>
+                <p className="text-gray-700">{CLP.format(product.product_unitprice)}</p>
+                <button
+                  className="mt-auto bg-blue-800 text-white py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+                  disabled={product.stock === 0}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart(product);
+                  }}
+                >
+                  {product.stock === 0 ? "Agotado" : "Agregar al carrito"}
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </main>
     </div>
   );

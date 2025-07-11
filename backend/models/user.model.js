@@ -57,8 +57,8 @@ const user = sequelize.define("user", {
     }
   }
 }, {
-  tableName: 'user', // 👈 minúscula
-  timestamps: false  // si no usas createdAt / updatedAt
+  tableName: 'user',
+  timestamps: false 
 });
 
 user.belongsTo(Rol, { foreignKey: 'fk_idRol', as: 'rol' });

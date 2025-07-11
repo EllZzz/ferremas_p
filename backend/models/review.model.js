@@ -18,7 +18,7 @@ const Review = sequelize.define("Review", {
     allowNull: false
   },
   review_desc: {
-    type: DataTypes.STRING(45),
+    type: DataTypes.STRING(150),
     allowNull: true
   },
   fk_idUser: {
@@ -40,8 +40,5 @@ const Review = sequelize.define("Review", {
 }, {
   tableName: 'Review'
 });
-
-Review.belongsTo(User, { foreignKey: 'fk_idUser', as: 'user' });
-Review.belongsTo(Product, { foreignKey: 'fk_idProduct', as: 'product' });
 
 export default Review;

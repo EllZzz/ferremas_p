@@ -45,7 +45,4 @@ const Product = sequelize.define("Product", {
   tableName: 'Product'
 });
 
-Product.belongsTo(Brand, { foreignKey: 'fk_idBrand', as: 'brand' });
-Product.belongsTo(Category, { foreignKey: 'fk_category', as: 'category' });
-
 export default Product;

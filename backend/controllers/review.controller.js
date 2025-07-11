@@ -7,12 +7,13 @@ export const getAllReviews = async (req, res) => {
     const where = fk_idProduct ? { fk_idProduct } : {};
 
     const reviews = await Review.findAll({
-      where,
-      include: [
-        { model: User, as: "reviewUser", attributes: ["id", "name", "email"] },
-        { model: Product, as: "reviewProduct", attributes: ["id", "name"] },
-      ],
-    });
+    where,
+    include: [
+      { model: User, as: "reviewUser", attributes: ["idUser", "name", "email"] },
+      { model: Product, as: "reviewProduct", attributes: ["idProduct", "product_name"] }
+    ]
+  });
+
 
     res.json(reviews);
   } catch (error) {
@@ -20,14 +21,15 @@ export const getAllReviews = async (req, res) => {
   }
 };
 
+
 export const getReviewById = async (req, res) => {
   try {
     const { id } = req.params;
 
     const review = await Review.findByPk(id, {
       include: [
-        { model: User, as: "reviewUser", attributes: ["id", "name", "email"] },
-        { model: Product, as: "reviewProduct", attributes: ["id", "name"] },
+        { model: User, as: "user", attributes: ["idUser", "name", "email"] },
+        { model: Product, as: "product", attributes: ["idProduct", "product_name"] }
       ],
     });
 
@@ -43,17 +45,25 @@ export const getReviewById = async (req, res) => {
 
 export const createReview = async (req, res) => {
   try {
-    const { fk_idUser, fk_idProduct, rating, comment } = req.body;
+    console.log("Payload del token:", req.user);
+    const { review_name, review_rating, review_desc, fk_idProduct } = req.body;
+    const fk_idUser = req.user?.idUser;
+
+    if (!review_name || !review_desc || !review_rating || !fk_idProduct || !fk_idUser) {
+      return res.status(400).json({ message: "Faltan campos obligatorios" });
+    }
 
     const newReview = await Review.create({
-      fk_idUser,
+      review_name,
+      review_rating,
+      review_desc,
       fk_idProduct,
-      rating,
-      comment,
+      fk_idUser,
     });
 
     res.status(201).json(newReview);
   } catch (error) {
+    console.error("Error en createReview:", error);
     res.status(500).json({ message: "Error al crear la reseña", error: error.message });
   }
 };

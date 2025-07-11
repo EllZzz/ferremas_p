@@ -1,22 +1,43 @@
-import user from '../models/user.model.js'; // minúscula
+import jwt from 'jsonwebtoken';
+import user from '../models/user.model.js';
 
 // LOGIN
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const foundUser = await user.findOne({ where: { email, password } }); // minúscula también aquí
+    const foundUser = await user.findOne({ where: { email, password } });
     if (!foundUser) {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });
     }
 
-    return res.json({
-      idUser: foundUser.idUser,
-      name: foundUser.name,
-      email: foundUser.email,
-      role: foundUser.fk_idRol,
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET no está definido en .env");
+    }
+
+    const token = jwt.sign(
+      {
+        idUser: foundUser.idUser,
+        name: foundUser.name,
+        role: foundUser.fk_idRol,
+        email: foundUser.email,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    return res.status(200).json({
+      message: 'Login exitoso',
+      token,
+      user: {
+        idUser: foundUser.idUser,
+        name: foundUser.name,
+        email: foundUser.email,
+        role: foundUser.fk_idRol,
+      },
     });
   } catch (error) {
+    console.error("Error en login:", error);
     return res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
   }
 };
@@ -29,7 +50,7 @@ export const register = async (req, res) => {
   } = req.body;
 
   try {
-    const existingUser = await user.findOne({ where: { email } }); // minúscula
+    const existingUser = await user.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: 'El correo ya está registrado' });
     }
@@ -49,6 +70,7 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Error en registro:", error);
     return res.status(500).json({ message: 'Error al registrar usuario', error: error.message });
   }
 };

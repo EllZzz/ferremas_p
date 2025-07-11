@@ -12,6 +12,7 @@ import { CartProvider } from "./context/CartContext";
 import './index.css';
 import Navbar from './components/Navbar';
 import Footerr from './components/Footerr';
+import ProductDetail from './components/ProductDetail';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/products" element={<ProductPage />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
